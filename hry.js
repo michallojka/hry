@@ -11,7 +11,7 @@ window.GAMES = [
   { slug: 'hop-orloj', title: 'Hop-orloj', tag: 'Postřeh',
     desc: 'Hopíci vykukují z okének orloje. Trefuj je, než se schovají za okenice!',
     img: 'img/stredni1.png', color: 'linear-gradient(160deg,#c8432f,#f3a79b)' },
-  { slug: 'velke-bourani', title: 'Velké bourání', tag: 'Ničení',
+  { slug: 'bourani', title: 'Velké bourání', tag: 'Ničení',
     desc: 'Rozbij stavbu dílek po dílku – cihly, sklo, ocel i výbušné TNT!',
     img: 'img/stredni6.png', color: 'linear-gradient(160deg,#e8a04a,#f9d77e)' }
 ];
