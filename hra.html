@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Hra – Hopsárium</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%;overflow:hidden;background:#13203d;font-family:Fredoka,"Arial Rounded MT Bold",Arial,sans-serif;color:#fff}
+  #bar{position:absolute;top:0;left:0;right:0;height:46px;display:flex;align-items:center;gap:10px;padding:0 10px}
+  #bar h1{flex:1;margin:0;font-size:19px;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .btn{background:rgba(255,255,255,.14);color:#fff;border:0;border-radius:99px;padding:7px 14px;font:600 15px Fredoka,Arial,sans-serif;
+    cursor:pointer;text-decoration:none;white-space:nowrap}
+  .btn:hover{background:rgba(255,255,255,.25)}
+  #stage{position:absolute;overflow:hidden;border-radius:10px;background:#000;box-shadow:0 8px 30px rgba(0,0,0,.4)}
+  #stage iframe{width:100%;height:100%;border:0;display:block}
+  :fullscreen #bar,:-webkit-full-screen #bar{display:none}
+  :fullscreen #stage,:-webkit-full-screen #stage{border-radius:0;box-shadow:none}
+  #rotate{position:fixed;inset:0;z-index:5;background:#13203d;display:none;flex-direction:column;align-items:center;justify-content:center;gap:22px;text-align:center;padding:24px}
+  #rotate.on{display:flex}
+  #rotate p{font-size:22px;margin:0;max-width:300px}
+  .phone{width:64px;height:110px;border:6px solid #fff;border-radius:14px;position:relative;animation:turn 2s ease-in-out infinite}
+  .phone::after{content:"";position:absolute;bottom:6px;left:50%;width:14px;height:4px;margin-left:-7px;background:#fff;border-radius:2px}
+  @keyframes turn{0%,20%{transform:rotate(0)}50%,80%{transform:rotate(-90deg)}100%{transform:rotate(0)}}
+  #toast{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);background:rgba(0,0,0,.7);padding:8px 16px;border-radius:99px;font-size:15px;
+    opacity:0;transition:opacity .4s;pointer-events:none;z-index:6}
+  #msg{position:absolute;inset:0;display:none;align-items:center;justify-content:center;text-align:center;padding:24px;font-size:20px}
+</style>
+</head>
+<body>
+<div id="bar">
+  <a class="btn" id="back" href="./">← Všechny hry</a>
+  <h1 id="title">Hra</h1>
+  <button class="btn" id="fs" hidden>⛶ Celá obrazovka</button>
+</div>
+<div id="stage"><iframe id="game" title="Hra" allow="fullscreen; autoplay"></iframe></div>
+<div id="msg"></div>
+<div id="rotate"><div class="phone"></div><p>Otoč telefon na šířku a můžeš hrát!</p><a class="btn" href="./">← Všechny hry</a></div>
+<div id="toast"></div>
+
+<script src="hry.js"></script>
+<script>
+const slug = new URLSearchParams(location.search).get('g');
+const game = (window.GAMES || []).find(g => g.slug === slug);
+const $ = id => document.getElementById(id);
+const stage = $('stage'), frame = $('game');
+
+if (!game) {
+  $('msg').style.display = 'flex';
+  $('msg').innerHTML = 'Tuhle hru jsme nenašli.<br><br><a class="btn" href="./">← Všechny hry</a>';
+  stage.hidden = true;
+} else {
+  document.title = game.title + ' – Hopsárium';
+  $('title').textContent = game.title;
+  frame.src = '../' + game.slug + '/';
+}
+
+/* ---- hrací plocha vždy v poměru 2:1 (jako stěna 6 × 3 m) ---- */
+function layout() {
+  const fs = !!(document.fullscreenElement || document.webkitFullscreenElement);
+  const top = fs ? 0 : 46, pad = fs ? 0 : 10;
+  const vw = innerWidth - 2 * pad, vh = innerHeight - top - pad;
+  const w = Math.floor(Math.min(vw, vh * 2)), h = Math.floor(w / 2);
+  Object.assign(stage.style, { width: w + 'px', height: h + 'px',
+    left: Math.round((innerWidth - w) / 2) + 'px', top: Math.round(top + (vh - h) / 2) + 'px' });
+  // mobil na výšku → výzva k otočení
+  const touch = matchMedia('(pointer: coarse)').matches;
+  $('rotate').classList.toggle('on', touch && innerHeight > innerWidth);
+}
+addEventListener('resize', layout);
+addEventListener('orientationchange', () => setTimeout(layout, 200));
+document.addEventListener('fullscreenchange', layout);
+document.addEventListener('webkitfullscreenchange', layout);
+layout();
+
+/* ---- celá obrazovka (Android, počítač; iPhone ji nepodporuje) ---- */
+const root = document.documentElement;
+const canFs = document.fullscreenEnabled || document.webkitFullscreenEnabled;
+if (canFs && game) $('fs').hidden = false;
+function toast(t) { const el = $('toast'); el.textContent = t; el.style.opacity = 1; clearTimeout(toast.t); toast.t = setTimeout(() => el.style.opacity = 0, 2600); }
+$('fs').onclick = async () => {
+  try {
+    await (root.requestFullscreen ? root.requestFullscreen() : root.webkitRequestFullscreen());
+    try { await screen.orientation.lock('landscape'); } catch (e) {}
+    if (!matchMedia('(pointer: coarse)').matches) toast('Celou obrazovku ukončíš klávesou Esc');
+  } catch (e) {}
+  frame.focus();
+};
+
+/* ---- texty ze stěny přepíšeme pro web (hry samotné zůstávají beze změny) ---- */
+const WEB_TEXT = {
+  'Dotkni se stěny nebo hoď míček!': 'Klikni nebo ťukni a hraj!',
+  'Zásahem do stěny začnete znovu': 'Kliknutím začnete znovu',
+  'Zásahem do stěny hrajete znovu': 'Kliknutím hrajete znovu'
+};
+frame.addEventListener('load', () => {
+  try {
+    const P = frame.contentWindow.CanvasRenderingContext2D.prototype;
+    for (const fn of ['fillText', 'strokeText']) {
+      const orig = P[fn];
+      if (orig.__web) continue;
+      P[fn] = function (s, ...a) { return orig.call(this, WEB_TEXT[s] || s, ...a); };
+      P[fn].__web = true;
+    }
+  } catch (e) { /* hra z jiné domény – texty necháme */ }
+  frame.focus();
+});
+</script>
+</body>
+</html>

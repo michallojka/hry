@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Hry Hopsária</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--ink:#2a1a3a;--pink:#e6007e;--sun:#ffd23f;--bg:#eaf6ff;--card:#fff}
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{font-family:Fredoka,"Arial Rounded MT Bold",Arial,sans-serif;color:var(--ink);
+    background:radial-gradient(1200px 600px at 50% -10%,#bfe6ff 0,var(--bg) 60%) fixed,var(--bg)}
+  header{text-align:center;padding:28px 16px 8px}
+  header img{height:64px;max-width:80%}
+  h1{font-size:clamp(28px,5vw,44px);margin:10px 0 4px;letter-spacing:.5px}
+  .sub{margin:0 auto;max-width:560px;font-weight:500;font-size:17px;opacity:.8}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:20px;
+    max-width:1120px;margin:24px auto 40px;padding:0 16px}
+  .card{background:var(--card);border-radius:22px;overflow:hidden;text-decoration:none;color:inherit;
+    box-shadow:0 6px 0 rgba(42,26,58,.12),0 10px 24px rgba(42,26,58,.10);
+    display:flex;flex-direction:column;transition:transform .15s ease,box-shadow .15s ease}
+  .card:hover,.card:focus-visible{transform:translateY(-4px);box-shadow:0 10px 0 rgba(42,26,58,.12),0 16px 30px rgba(42,26,58,.14);outline:none}
+  .art{aspect-ratio:2/1;position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden}
+  .art::after{content:"";position:absolute;inset:auto 0 0 0;height:34%;background:rgba(255,255,255,.18);
+    clip-path:ellipse(70% 100% at 50% 100%)}
+  .art img{height:82%;position:relative;z-index:1;filter:drop-shadow(0 6px 6px rgba(0,0,0,.25));transition:transform .2s}
+  .card:hover .art img{transform:scale(1.07) rotate(-4deg)}
+  .tag{position:absolute;top:10px;left:10px;z-index:2;background:rgba(255,255,255,.92);border-radius:99px;
+    padding:3px 10px;font-size:13px;font-weight:600}
+  .body{padding:14px 18px 18px;display:flex;flex-direction:column;gap:8px;flex:1}
+  .body h2{margin:0;font-size:23px}
+  .body p{margin:0;font-weight:500;line-height:1.35;opacity:.85;flex:1}
+  .play{align-self:flex-start;margin-top:6px;background:var(--pink);color:#fff;border-radius:99px;
+    padding:9px 20px;font-weight:700;font-size:17px;box-shadow:0 4px 0 #a3005a}
+  footer{text-align:center;padding:0 16px 32px;font-size:14px;opacity:.65;font-weight:500}
+</style>
+</head>
+<body>
+<header>
+  <img src="img/logo.png" alt="Hopsárium">
+  <h1>Hry Hopsária</h1>
+  <p class="sub">Zahraj si hry z naší interaktivní stěny – myší, prstem na tabletu nebo s kamarády na jednom displeji.</p>
+</header>
+<main class="grid" id="grid"></main>
+<footer>Na mobilu otoč telefon na šířku. Na stěně v Hopsáriu se hry hrají dotykem a házením míčků.</footer>
+
+<script src="hry.js"></script>
+<script>
+
+
+const grid = document.getElementById('grid');
+for (const g of GAMES) {
+  const a = document.createElement('a');
+  a.className = 'card'; a.href = 'hra.html?g=' + encodeURIComponent(g.slug);
+  a.innerHTML = `<div class="art" style="background:${g.color}"><span class="tag">${g.tag}</span><img src="${g.img}" alt=""></div>
+    <div class="body"><h2>${g.title}</h2><p>${g.desc}</p><span class="play">Hrát ▶</span></div>`;
+  grid.appendChild(a);
+}
+</script>
+</body>
+</html>
