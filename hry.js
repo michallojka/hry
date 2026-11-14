@@ -2,7 +2,7 @@
    slug = název repozitáře hry na GitHubu (adresa https://VASE-JMENO.github.io/<slug>/).
    Novou hru přidáte dalším řádkem. */
 window.GAMES = [
-  { slug: 'Hops_priserky', title: 'Zachraňte Hopsáky', tag: 'Spolupráce',
+  { slug: 'zachrante-hopsaky', title: 'Zachraňte Hopsáky', tag: 'Spolupráce',
     desc: 'Hopsáci padají do moře – chytej je, než šplouchnou! Na konci zažeň piráta.',
     img: 'img/pirat.png', color: 'linear-gradient(160deg,#2b7bd9,#5ec8f2)' },
   { slug: 'pretahovana', title: 'Přetahovaná', tag: '2 týmy',
@@ -14,4 +14,7 @@ window.GAMES = [
   { slug: 'bourani', title: 'Velké bourání', tag: 'Ničení',
     desc: 'Rozbij stavbu dílek po dílku – cihly, sklo, ocel i výbušné TNT!',
     img: 'img/stredni6.png', color: 'linear-gradient(160deg,#e8a04a,#f9d77e)' }
+  { slug: 'vybarvovani', title: 'Vybarvi Hopsárium', tag: 'Pro nejmenší',
+    desc: 'Pět omalovánek z Hopsária. Každé ťuknutí vybarví jednu plochu – vybarvíte všechny?',
+    img: 'img/maly2.png', color: 'linear-gradient(160deg,#ff8fc8,#ffe08a)' }
 ];
