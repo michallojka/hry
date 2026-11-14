@@ -2,7 +2,7 @@
    slug = název repozitáře hry na GitHubu (adresa https://VASE-JMENO.github.io/<slug>/).
    Novou hru přidáte dalším řádkem. */
 window.GAMES = [
-  { slug: 'hops_priserky', title: 'Zachraňte Hopsáky', tag: 'Spolupráce',
+  { slug: 'Hops_priserky', title: 'Zachraňte Hopsáky', tag: 'Spolupráce',
     desc: 'Hopsáci padají do moře – chytej je, než šplouchnou! Na konci zažeň piráta.',
     img: 'img/pirat.png', color: 'linear-gradient(160deg,#2b7bd9,#5ec8f2)' },
   { slug: 'pretahovana', title: 'Přetahovaná', tag: '2 týmy',
