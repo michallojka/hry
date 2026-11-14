@@ -13,7 +13,7 @@ window.GAMES = [
     img: 'img/stredni1.png', color: 'linear-gradient(160deg,#c8432f,#f3a79b)' },
   { slug: 'bourani', title: 'Velké bourání', tag: 'Ničení',
     desc: 'Rozbij stavbu dílek po dílku – cihly, sklo, ocel i výbušné TNT!',
-    img: 'img/stredni6.png', color: 'linear-gradient(160deg,#e8a04a,#f9d77e)' }
+    img: 'img/stredni6.png', color: 'linear-gradient(160deg,#e8a04a,#f9d77e)' },
   { slug: 'vybarvovani', title: 'Vybarvi Hopsárium', tag: 'Pro nejmenší',
     desc: 'Pět omalovánek z Hopsária. Každé ťuknutí vybarví jednu plochu – vybarvíte všechny?',
     img: 'img/maly2.png', color: 'linear-gradient(160deg,#ff8fc8,#ffe08a)' }
